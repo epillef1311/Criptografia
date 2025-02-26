@@ -1,7 +1,6 @@
 import sys
 from typing import List
 
-# Definição dos rotores históricos da Enigma
 ROTORES = {
     1: "JGDQOXUSCAMIFRVTPNEWKBLZYH",
     2: "NTZPSFBOKMWRCJDIVLAEYUXHGQ",
@@ -10,10 +9,8 @@ ROTORES = {
     5: "ZOUESYDKFWPCIQXHMVBLGNJRAT"
 }
 
-# Refletor fixo da Enigma
 REFLETOR = "YRUHQSLDPXNGOKMIEBFZCWVJAT"
 
-# Função para configurar os rotores
 class Rotor:
     def __init__(self, wiring: str, position: int):
         self.wiring = wiring
@@ -32,7 +29,6 @@ class Rotor:
         self.position = (self.position + 1) % 26
         return self.position == 0
 
-# Função principal da Enigma
 class Enigma:
     def __init__(self, rotor_selection: List[int], rotor_positions: List[int]):
         self.rotors = [Rotor(ROTORES[i], pos) for i, pos in zip(rotor_selection, rotor_positions)]
@@ -44,7 +40,6 @@ class Enigma:
                 continue
             char = char.upper()
             
-            # Rotação dos rotores
             rotate_next = True
             for rotor in self.rotors:
                 if rotate_next:
@@ -52,14 +47,11 @@ class Enigma:
                 else:
                     break
             
-            # Passando pelos rotores na ordem direta
             for rotor in self.rotors:
                 char = rotor.forward(char)
             
-            # Passando pelo refletor
             char = REFLETOR[ord(char) - ord('A')]
             
-            # Passando pelos rotores na ordem inversa
             for rotor in reversed(self.rotors):
                 char = rotor.backward(char)
             
@@ -67,7 +59,6 @@ class Enigma:
         
         return ''.join(result)
 
-# Leitura dos parâmetros
 if __name__ == "__main__":
     rotores_escolhidos = list(map(int, input("Escolha 3 rotores (1-5): ").split(' ')))
     posicoes_iniciais = list(map(int, input("Escolha 3 posições iniciais (1-26): ").split(' ')))
